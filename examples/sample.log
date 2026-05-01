@@ -1,9 +1,0 @@
-2026-05-01 09:00:01 INFO Application started
-2026-05-01 09:00:05 INFO Connected to database db-01
-2026-05-01 09:01:11 WARNING Slow request detected route=/api/orders duration=1200ms
-2026-05-01 09:01:12 ERROR Payment failed order_id=1024 gateway=stripe
-2026-05-01 09:01:13 ERROR Payment failed order_id=1025 gateway=stripe
-2026-05-01 09:01:15 INFO Retrying payment order_id=1025
-2026-05-01 09:02:03 CRITICAL Database connection lost db-01
-this line is malformed and should be counted as invalid
-2026-05-01 09:02:20 INFO Database connection restored db-01

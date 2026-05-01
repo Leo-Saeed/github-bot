@@ -1,30 +1,37 @@
-# Log Insight CLI
+# GitHub Workflow Bot
 
-A clean, production-ready Python mini project that analyzes application log files and produces a concise health report. It is designed as a practical GitHub portfolio project with modular code, clear error handling, and a small standout feature: repeated messages are normalized so noisy IDs do not hide real patterns.
+GitHub Workflow Bot is a clean Python CLI project that helps developers start and publish small projects faster. It can generate a professional Python project skeleton, suggest commit messages from current Git changes, and print the exact Git commands needed to initialize, commit, and push a repository.
+
+The project is intentionally simple, modular, and portfolio-ready.
 
 ## Features
 
-- Parse timestamped application logs with levels such as `INFO`, `WARNING`, `ERROR`, and `CRITICAL`.
-- Summarize log level counts, invalid lines, time range, and busiest minute.
-- Detect repeated message patterns by normalizing IDs, durations, and other numeric values.
-- Calculate a simple `0-100` health score based on severity and parse quality.
-- Export a polished Markdown report for sharing or documentation.
+- Generate a clean Python project skeleton with `src/`, `tests/`, `README.md`, `.gitignore`, and `requirements.txt`.
+- Suggest practical Conventional Commit messages from `git status --short`.
+- Show copy-ready Git commands for `add`, `commit`, remote setup, and push.
+- Provide both direct CLI commands and a simple interactive menu.
+- Use only the Python standard library.
 
 ## Project Structure
 
 ```text
 .
-├── examples/
-│   └── sample.log
 ├── src/
-│   ├── __init__.py
-│   └── loginsight/
-│       ├── __init__.py
-│       ├── analyzer.py
-│       ├── cli.py
-│       ├── models.py
-│       ├── parser.py
-│       └── reporter.py
+│   ├── github_workflow_bot/
+│   │   ├── __init__.py
+│   │   ├── cli.py
+│   │   ├── commit_suggester.py
+│   │   ├── git_commands.py
+│   │   ├── git_status.py
+│   │   ├── menu.py
+│   │   ├── models.py
+│   │   └── skeleton.py
+│   ├── utils/
+│   │   ├── __init__.py
+│   │   ├── console.py
+│   │   └── files.py
+│   └── __init__.py
+├── .gitignore
 ├── main.py
 ├── README.md
 └── requirements.txt
@@ -35,8 +42,8 @@ A clean, production-ready Python mini project that analyzes application log file
 1. Clone the repository.
 
 ```bash
-git clone <your-repository-url>
-cd <your-repository-folder>
+git clone https://github.com/<username>/<repository>.git
+cd <repository>
 ```
 
 2. Create and activate a virtual environment.
@@ -58,64 +65,67 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The project currently uses only the Python standard library, so installation is intentionally lightweight.
+This project currently uses only the Python standard library.
 
 ## Usage
 
-Analyze the included sample log:
+Open the interactive menu:
 
 ```bash
-python main.py examples/sample.log
+python main.py menu
 ```
 
-Export a Markdown report:
+Generate a new Python project skeleton:
 
 ```bash
-python main.py examples/sample.log --export reports/sample-report.md
+python main.py init-project my-python-app
 ```
 
-Limit repeated message patterns:
+Generate a skeleton in a specific destination:
 
 ```bash
-python main.py examples/sample.log --top 3
+python main.py init-project my-python-app --destination projects
 ```
 
-## Expected Log Format
+Suggest commit messages from the current repository:
 
-Each valid log line should follow this format:
-
-```text
-YYYY-MM-DD HH:MM:SS LEVEL Message text
+```bash
+python main.py suggest-commit --path .
 ```
 
-Example:
+Show Git commands for publishing:
 
-```text
-2026-05-01 09:01:12 ERROR Payment failed order_id=1024 gateway=stripe
+```bash
+python main.py git-commands --message "feat: add GitHub workflow helper bot" --remote-url https://github.com/<username>/<repository>.git
 ```
-
-Supported levels are `TRACE`, `DEBUG`, `INFO`, `WARNING`, `WARN`, `ERROR`, `CRITICAL`, and `FATAL`.
 
 ## Example Output
 
 ```text
-Log Insight Report
-==================
-Health score: 47/100
-Total parsed entries: 8
-Invalid lines skipped: 1
-
-Levels:
-- CRITICAL: 1
-- ERROR: 2
-- INFO: 4
-- WARNING: 1
+Suggested Commit Messages
+-------------------------
+- feat: add GitHub workflow helper bot - Detected a new app-style structure with source and README files.
+- feat: update project structure - Best fit based on changed file types and git statuses.
+- chore: update project workflow files - Good general-purpose option for setup or maintenance changes.
 ```
 
-## Best Practices Included
+## Git Commands
 
-- Modular package structure under `src/`.
-- Dataclasses for structured analysis data.
-- Clear CLI argument validation.
-- Custom exception for readable parse errors.
-- Small, focused functions that are easy to test and extend.
+Run these commands from the project root after creating a GitHub repository:
+
+```bash
+git init
+git branch -M main
+git add .
+git commit -m "feat: add GitHub workflow helper bot"
+git remote add origin https://github.com/<username>/<repository>.git
+git push -u origin main
+```
+
+Replace `<username>` and `<repository>` with your GitHub username and repository name.
+
+## Notes
+
+- The bot prints Git commands instead of running destructive publish operations automatically.
+- Existing files are skipped during skeleton generation unless `--force` is used.
+- Commit suggestions are rule-based, transparent, and easy to extend.
